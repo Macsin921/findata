@@ -1,0 +1,25 @@
+name: Deploy to HuggingFace
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'hf-space/**'
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Push to HuggingFace
+        env:
+          HF_TOKEN: ${{ secrets.HF_TOKEN }}
+        run: |
+          cd hf-space
+          git init
+          git config user.email "bot@findata.ai"
+          git config user.name "Findata Bot"
+          git add .
+          git commit -m "Auto deploy from GitHub"
+          git push --force https://Diorrock:$HF_TOKEN@huggingface.co/spaces/Diorrock/hydra-fixer main
